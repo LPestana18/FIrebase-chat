@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Chat com  firebase</string>
+
+    <string name="email">Email:</string>
+    <string name="password">Senha:</string>
+    <string name="enter">Entrar</string>
+    <string name="signIn">Não tem uma conta ? Crie aqui!</string>
+    <string name="name">Nome:</string>
+    <string name="insert">Cadastrar</string>
+</resources>

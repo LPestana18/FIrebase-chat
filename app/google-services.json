@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "155945448403",
+    "firebase_url": "https://chatcomfirebase-da99c.firebaseio.com",
+    "project_id": "chatcomfirebase-da99c",
+    "storage_bucket": "chatcomfirebase-da99c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:155945448403:android:da2218e046c30808bef526",
+        "android_client_info": {
+          "package_name": "br.com.lucaspestana.chatcomfirebase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "155945448403-h5e6365upaouu0g9otd4pg4lpventbhl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAf9FyPmWWuMatIvpVs36A8zj6VlRqxdlw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "155945448403-h5e6365upaouu0g9otd4pg4lpventbhl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
