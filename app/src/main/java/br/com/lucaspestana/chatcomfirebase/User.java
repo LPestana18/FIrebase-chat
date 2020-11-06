@@ -1,15 +1,17 @@
 package br.com.lucaspestana.chatcomfirebase;
 
 public class User {
-    private final String usid;
-    private final String username;
-    private final String profileUrl;
+    private String usid;
+    private String username;
+    private String profileUrl;
 
     public User(String usid, String username, String profileUrl) {
         this.usid = usid;
         this.username = username;
         this.profileUrl = profileUrl;
     }
+
+    public User() {}
 
     public String getUsid() {
         return usid;

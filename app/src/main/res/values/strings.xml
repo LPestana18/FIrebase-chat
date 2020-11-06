@@ -8,4 +8,6 @@
     <string name="name">Nome:</string>
     <string name="insert">Cadastrar</string>
     <string name="photo">Foto</string>
+    <string name="contacts">contacts</string>
+    <string name="logout">Logout</string>
 </resources>
