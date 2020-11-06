@@ -67,8 +67,13 @@
         android:id="@+id/btn_selected_photo"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_marginTop="12dp"
         android:background="@drawable/bg_button_img_rounded"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:text="@string/photo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -76,11 +81,12 @@
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/img_photo"
         android:layout_width="150dp"
+        app:civ_border_width="2dp"
+        app:civ_border_color="@android:color/holo_orange_dark"
         android:layout_height="150dp"
         app:layout_constraintBottom_toBottomOf="@+id/btn_selected_photo"
         app:layout_constraintEnd_toEndOf="@+id/btn_selected_photo"
-        app:layout_constraintStart_toStartOf="@id/btn_selected_photo"
-        app:layout_constraintTop_toTopOf="@id/btn_selected_photo"
+        app:layout_constraintStart_toStartOf="@+id/btn_selected_photo"
+        app:layout_constraintTop_toTopOf="@+id/btn_selected_photo"
         />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

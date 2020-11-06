@@ -19,11 +19,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
+import java.util.UUID;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -32,6 +39,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText mEditPassword;
     private Button mBtnEnter;
     private Button mBtnSelectedPhoto;
+
     private ImageView mImgPhoto;
     private Uri mSelectedUri;
 
@@ -45,7 +53,7 @@ public class RegisterActivity extends AppCompatActivity {
         mEditPassword = findViewById(R.id.edit_password);
         mBtnEnter = findViewById(R.id.btn_enter);
         mBtnSelectedPhoto = findViewById(R.id.btn_selected_photo);
-        mBtnSelectedPhoto = findViewById(R.id.img_photo);
+        mImgPhoto = findViewById(R.id.img_photo);
 
         mBtnSelectedPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,11 +79,11 @@ public class RegisterActivity extends AppCompatActivity {
 
             Bitmap bitmap = null;
             try {
-                MediaStore.Images.Media.getBitmap(getContentResolver(), mSelectedUri);
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), mSelectedUri);
                 mImgPhoto.setImageDrawable(new BitmapDrawable(bitmap));
                 mBtnSelectedPhoto.setAlpha(0);
             } catch (IOException e) {
-                e.printStackTrace();
+
             }
         }
     }
@@ -87,11 +95,12 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void createUser() {
+        String name = mEditEmail.getText().toString();
         String email = mEditEmail.getText().toString();
         String senha = mEditPassword.getText().toString();
 
-        if (email == null || email.isEmpty() || senha == null || senha.isEmpty()) {
-            Toast.makeText(this, "Senha e Email devem ser preenchidos", Toast.LENGTH_SHORT).show();
+        if (name == null || name.isEmpty() || email == null || email.isEmpty() || senha == null || senha.isEmpty()) {
+            Toast.makeText(this, "Nome, Senha e Email devem ser preenchidos", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -102,6 +111,8 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Log.i("Teste", task.getResult().getUser().getUid());
+
+                            saveUserInFirebase();
                         }
                     }
 
@@ -111,5 +122,55 @@ public class RegisterActivity extends AppCompatActivity {
                 Log.i("Teste", e.getMessage());
             }
         });
+    }
+
+    private void saveUserInFirebase() {
+        String filename = UUID.randomUUID().toString();
+        final StorageReference ref = FirebaseStorage.getInstance().getReference("/images/" + filename);
+        ref.putFile(mSelectedUri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                Log.i("Teste", uri.toString());
+
+                                String uid =  FirebaseAuth.getInstance().getUid();
+                                String username = mEditUsername.getText().toString();
+                                String profileUrl = uri.toString();
+
+                                User user = new User(uid, username, profileUrl);
+
+                                FirebaseFirestore.getInstance().collection("users")
+                                        .add(user)
+                                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                            @Override
+                                            public void onSuccess(DocumentReference documentReference) {
+                                                Log.i("Teste", documentReference.getId());
+                                                Intent intent = new Intent(RegisterActivity.this, MessagesActivity.class);
+
+                                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                                                startActivity(intent);
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.i("Teste", e.getMessage());
+
+                                            }
+                                        });
+                            }
+                        });
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("Teste", e.getMessage(), e);
+                    }
+                });
     }
 }
