@@ -74,10 +74,10 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 0) {
+        if (requestCode == 0){
             mSelectedUri = data.getData();
 
-            Bitmap bitmap = null;
+            Bitmap bitmap;
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), mSelectedUri);
                 mImgPhoto.setImageDrawable(new BitmapDrawable(bitmap));
